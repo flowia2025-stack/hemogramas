@@ -86,13 +86,29 @@
   }
   .tag.gold>span{position:relative;z-index:2}
   .tag.gold::after{
-    content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;z-index:1;
+    content:"";position:absolute;top:0;left:0;width:45%;height:100%;z-index:1;
     background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.6),rgba(255,255,255,0));
-    transform:skewX(-18deg);animation:brilho 3s ease-in-out infinite;
+    will-change:transform;animation:brilho 3s ease-in-out infinite;
   }
   @keyframes pulso-gold{
     0%,100%{box-shadow:0 10px 22px -8px rgba(184,134,42,.6),0 0 0 0 rgba(215,169,74,.55)}
     55%{box-shadow:0 10px 22px -8px rgba(184,134,42,.6),0 0 0 13px rgba(215,169,74,0)}
+  }
+  .tag.destaque{
+    background:linear-gradient(135deg,var(--blue-500),var(--navy-800));
+    color:#fff;font-size:13px;font-weight:900;letter-spacing:.12em;
+    padding:11px 26px;position:relative;overflow:hidden;
+    animation:pulso-azul 2.6s ease-in-out infinite;
+  }
+  .tag.destaque>span{position:relative;z-index:2}
+  .tag.destaque::after{
+    content:"";position:absolute;top:0;left:0;width:45%;height:100%;z-index:1;
+    background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));
+    will-change:transform;animation:brilho 3s ease-in-out infinite;
+  }
+  @keyframes pulso-azul{
+    0%,100%{box-shadow:0 10px 22px -8px rgba(47,95,168,.6),0 0 0 0 rgba(63,123,208,.5)}
+    55%{box-shadow:0 10px 22px -8px rgba(47,95,168,.6),0 0 0 13px rgba(63,123,208,0)}
   }
   .tag.dark{background:rgba(255,255,255,.08);color:#fff}
   .tag.red{background:var(--red-50);color:var(--red-600)}
@@ -129,15 +145,19 @@
   .botao:active{transform:translateY(3px)}
   .botao span{position:relative;z-index:2}
   .botao::after{
-    content:"";position:absolute;top:0;left:-65%;width:45%;height:100%;z-index:1;
+    content:"";position:absolute;top:0;left:0;width:45%;height:100%;z-index:1;
     background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.42),rgba(255,255,255,0));
-    transform:skewX(-18deg);animation:brilho 3s ease-in-out infinite;
+    will-change:transform;animation:brilho 3s ease-in-out infinite;
   }
   @keyframes halo{
     0%,100%{box-shadow:0 5px 0 var(--verde-escuro),0 0 0 0 rgba(31,168,90,.42)}
     55%{box-shadow:0 5px 0 var(--verde-escuro),0 0 0 14px rgba(31,168,90,0)}
   }
-  @keyframes brilho{0%{left:-65%}60%,100%{left:125%}}
+  /* só transform: não recalcula layout, roda na placa gráfica */
+  @keyframes brilho{
+    0%{transform:translateX(-150%) skewX(-18deg)}
+    60%,100%{transform:translateX(278%) skewX(-18deg)}
+  }
 
   .botao.compacto{
     font-size:clamp(11.5px,3.4vw,18px);padding-left:10px;padding-right:10px;letter-spacing:-.04em;
@@ -266,13 +286,13 @@
        --sentido  = normal (anda para a esquerda) | reverse (para a direita)
   */
   .esteira{
-    --duracao:52s;
-    --largura:clamp(250px,78vw,340px);
+    --duracao:24s;
+    --largura:clamp(170px,53vw,240px);
     --proporcao:9/16;
     --espaco:16px;
     --sentido:normal;
 
-    position:relative;overflow:hidden;padding:4px 0 10px;
+    position:relative;overflow:hidden;padding:4px 0 6px;
     -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);
             mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);
   }
@@ -289,6 +309,9 @@
     from{transform:translateX(0)}
     to{transform:translateX(calc(-50% - (var(--espaco) / 2)))}
   }
+  /* segunda faixa: anda para o outro lado, dando sensação de volume */
+  .esteira.contraria{--sentido:reverse;margin-top:14px}
+
   /* quem prefere menos movimento: desliga a animação e deixa arrastar com o dedo */
   @media (prefers-reduced-motion: reduce){
     .fileira{animation:none}
@@ -683,18 +706,22 @@
 <section class="preview">
   <div class="wrap">
     <div class="section-head">
-      <span class="tag">Veja por dentro</span>
+      <span class="tag destaque"><span>Veja por dentro</span></span>
       <h2>O hemograma real, o achado destacado e a interpretação direta</h2>
     </div>
   </div>
   <div class="esteira">
     <div class="fileira">
-      <img src="imagens/atlas-01.webp" width="640" height="1138" loading="lazy" alt="Padrão 01: anemia microcítica e hipocrômica">
-      <img src="imagens/atlas-03.webp" width="640" height="1138" loading="lazy" alt="Padrão 03: anemia normocítica">
-      <img src="imagens/atlas-04.webp" width="640" height="1138" loading="lazy" alt="Padrão 04: leucocitose com neutrofilia">
-      <img src="imagens/atlas-06.webp" width="640" height="1138" loading="lazy" alt="Padrão 06: eosinofilia">
-      <img src="imagens/atlas-07.webp" width="640" height="1138" loading="lazy" alt="Padrão 07: plaquetopenia">
-      <img src="imagens/atlas-08.webp" width="640" height="1138" loading="lazy" alt="Padrão 08: trombocitose">
+      <img src="imagens/atlas-01.webp" width="720" height="1280" loading="lazy" alt="Padrão 01: anemia microcítica e hipocrômica">
+      <img src="imagens/atlas-04.webp" width="720" height="1280" loading="lazy" alt="Padrão 04: leucocitose com neutrofilia">
+      <img src="imagens/atlas-07.webp" width="720" height="1280" loading="lazy" alt="Padrão 07: plaquetopenia">
+    </div>
+  </div>
+  <div class="esteira contraria">
+    <div class="fileira">
+      <img src="imagens/atlas-03.webp" width="720" height="1280" loading="lazy" alt="Padrão 03: anemia normocítica">
+      <img src="imagens/atlas-06.webp" width="720" height="1280" loading="lazy" alt="Padrão 06: eosinofilia">
+      <img src="imagens/atlas-08.webp" width="720" height="1280" loading="lazy" alt="Padrão 08: trombocitose">
     </div>
   </div>
   <div class="wrap">
@@ -1130,13 +1157,12 @@
 
   /* ---- esteira: duplica as imagens para o loop ficar invisível ---- */
   (function(){
-    var fileira = document.querySelector('.esteira .fileira');
-    if(!fileira) return;
-    var originais = [].slice.call(fileira.children);
-    originais.forEach(function(n){
-      var copia = n.cloneNode(true);
-      copia.setAttribute('aria-hidden','true');
-      fileira.appendChild(copia);
+    document.querySelectorAll('.esteira .fileira').forEach(function(fileira){
+      [].slice.call(fileira.children).forEach(function(n){
+        var copia = n.cloneNode(true);
+        copia.setAttribute('aria-hidden','true');
+        fileira.appendChild(copia);
+      });
     });
   })();
 
@@ -1195,14 +1221,52 @@
     mostrar(0); rodar();
   })();
 
-  /* ---- depois que a primeira tela carrega, puxa todas as outras imagens de
-         uma vez, para nao travar quando a pessoa desce a pagina ---- */
-  window.addEventListener('load', function(){
-    setTimeout(function(){
-      var lazy = document.querySelectorAll('img[loading="lazy"]');
-      [].forEach.call(lazy, function(im){ im.loading = 'eager'; });
-    }, 200);
-  });
+  /* ==========================================================
+     Carregamento das imagens
+
+     A foto do topo já vem com fetchpriority="high" e sem lazy.
+     As demais ficam com loading="lazy", mas são puxadas de duas formas,
+     o que vier primeiro:
+       a) quando faltam ~300px para entrar na tela (observador);
+       b) com a página ociosa, uma a cada 150-250ms, em prioridade baixa,
+          para não competir com a imagem principal nem travar o toque.
+     ========================================================== */
+  (function(){
+    var fila = [].slice.call(document.querySelectorAll('img[loading="lazy"]'));
+    if(!fila.length) return;
+
+    function baixar(img, prioridade){
+      if(!img || img.dataset.puxada) return;
+      img.dataset.puxada = '1';
+      if(prioridade === 'baixa' && 'fetchPriority' in img) img.fetchPriority = 'low';
+      img.loading = 'eager';
+      var i = fila.indexOf(img);
+      if(i > -1) fila.splice(i, 1);
+    }
+
+    // (a) antecipa em 300px antes de entrar na tela
+    if('IntersectionObserver' in window){
+      var obs = new IntersectionObserver(function(entradas){
+        entradas.forEach(function(e){
+          if(e.isIntersecting){ baixar(e.target); obs.unobserve(e.target); }
+        });
+      }, {rootMargin: '300px 0px'});
+      fila.slice().forEach(function(img){ obs.observe(img); });
+    }
+
+    // (b) fila em segundo plano, espaçada, quando o navegador está ocioso
+    var ocioso = window.requestIdleCallback || function(fn){
+      return setTimeout(function(){ fn({ timeRemaining: function(){ return 50; } }); }, 200);
+    };
+    function proxima(){
+      if(!fila.length) return;
+      ocioso(function(){
+        baixar(fila[0], 'baixa');
+        setTimeout(proxima, 120 + Math.random() * 70);    // ~150 a 250ms somando a espera do ocioso
+      }, { timeout: 2000 });
+    }
+    window.addEventListener('load', function(){ setTimeout(proxima, 300); });
+  })();
 
   // scroll reveal
   const items = document.querySelectorAll('.reveal');
