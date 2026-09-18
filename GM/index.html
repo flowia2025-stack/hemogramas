@@ -585,6 +585,73 @@ h2, .section-title { font-size: 26px !important; line-height: 1.25 !important; m
   display: block !important;
   text-align: center !important;
 }
+
+/* ===== Overlay de saida (back-redirect / botao voltar) ===== */
+#saida-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+#saida-overlay.ativo { display: flex; }
+#saida-modal {
+  position: relative;
+  background: var(--color-bg-base, #F8F5EE);
+  border-radius: 20px;
+  max-width: 460px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 1.5rem 1.35rem;
+  box-shadow: 0 24px 60px -12px rgba(0,0,0,.5);
+}
+#saida-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(11,32,16,.08);
+  color: #0B2416;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alerta-saida {
+  background: linear-gradient(135deg, #D64545, #C62828);
+  color: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(198, 40, 40, .35);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .alerta-saida { animation: pulso-alerta 1.8s ease-in-out infinite; }
+}
+@keyframes pulso-alerta {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(198, 40, 40, .45); }
+  55% { box-shadow: 0 0 0 12px rgba(198, 40, 40, 0); }
+}
+.oferta-card {
+  background:#fff; border:2px solid var(--color-gold); border-radius: 18px;
+  padding: 1.25rem; box-shadow: 0 14px 34px -12px rgba(11,32,16,.25);
+}
+.oferta-card ul { display:flex; flex-direction:column; gap:2px; }
+.oferta-card li {
+  border-bottom:1px dashed var(--color-border); padding:9px 0; display:flex;
+  align-items:center; justify-content:space-between; gap:8px; font-size:14.5px; color:#2B332C;
+}
+.oferta-card li:last-child { border-bottom:none; }
 </style>
 </head>
 <body class="font-sans bg-cream text-forest antialiased overflow-x-hidden">
@@ -1150,6 +1217,64 @@ h2, .section-title { font-size: 26px !important; line-height: 1.25 !important; m
   </div>
 </div>
 
+<!-- MODAL DE SAIDA (back-redirect / botao voltar do navegador) -->
+<div id="saida-overlay" role="dialog" aria-modal="true" aria-labelledby="saida-titulo">
+  <div id="saida-modal">
+    <button id="saida-close" type="button" aria-label="Fechar">✕</button>
+
+    <div class="alerta-saida text-center py-3 px-4 mb-5">
+      <p class="font-bold text-sm leading-snug">⚠️ ESPERE! NÃO FECHE ESTA PÁGINA AGORA.</p>
+    </div>
+
+    <h2 id="saida-titulo" class="font-serif text-forest text-xl sm:text-2xl leading-tight font-bold text-center mb-4">Sabia que a dependência contínua de medicamentos químicos pode reduzir a sua esperança de vida em até 15 anos?</h2>
+
+    <div class="w-full rounded-2xl overflow-hidden shadow-xl mb-5 ring-1 ring-borderc">
+      <img id="saida-img-dependencia" class="w-full h-auto object-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="imagens/dependencia-medicamentos.jpg" width="1536" height="1024" alt="Dependência de medicamentos químicos">
+    </div>
+
+    <p class="mb-3" style="font-size:15px;line-height:1.5;color:#2B332C;">Enquanto as farmácias lucram todos os meses com comprimidos que apenas disfarçam os sintomas e sobrecarregam o seu fígado e estômago, o seu corpo continua a sofrer em silêncio.</p>
+
+    <p class="mb-3" style="font-size:15px;line-height:1.5;color:#2B332C;">A verdadeira recuperação não vem de químicos de laboratório, mas sim das <strong>mezinhas e garrafadas medicinais</strong> que os nossos antepassados usavam para viver décadas com vitalidade e sem dores.</p>
+
+    <p class="mb-5 font-bold text-center" style="font-size:15px;line-height:1.5;color:#0B2416;">Não queremos que o valor seja um obstáculo para recuperar o conforto, a mobilidade e o bem-estar que merece.</p>
+
+    <div class="text-center mb-5">
+      <span class="tag gold"><span>Oferta Exclusiva de Saída: 33% de Desconto Imediato</span></span>
+    </div>
+
+    <div class="oferta-card mb-4">
+      <p class="text-center font-bold mb-4" style="font-size:15px;line-height:1.45;color:#0B2416;">Acesso completo ao guia <strong>+300 Receitas de Mezinhas e Garrafadas Medicinais</strong> com todos os bónus de oferta incluídos:</p>
+
+      <div class="w-36 sm:w-40 aspect-square mx-auto mb-5 rounded-xl overflow-hidden shadow ring-1 ring-borderc">
+        <img id="saida-img-pacote" class="w-full h-full object-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="imagens/pacote-completo-bonus.jpg" width="900" height="900" alt="Pacote Completo com todos os bónus">
+      </div>
+
+      <ul class="text-sm mb-2">
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>+300 Mezinhas e Garrafadas Medicinais</span><span class="item-status-included">Incluído</span></li>
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>Mounjaro Caseiro</span><span class="text-xs whitespace-nowrap"><span class="item-status-price">24 €</span> <span class="text-cta font-bold">Grátis</span></span></li>
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>Farmácia Natural em Casa</span><span class="text-xs whitespace-nowrap"><span class="item-status-price">17 €</span> <span class="text-cta font-bold">Grátis</span></span></li>
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>Pomadas e Bálsamos Ancestrais</span><span class="text-xs whitespace-nowrap"><span class="item-status-price">19 €</span> <span class="text-cta font-bold">Grátis</span></span></li>
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>Guia do Sono Reparador</span><span class="text-xs whitespace-nowrap"><span class="item-status-price">19 €</span> <span class="text-cta font-bold">Grátis</span></span></li>
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>Remédios Naturais em Gotas</span><span class="text-xs whitespace-nowrap"><span class="item-status-price">17 €</span> <span class="text-cta font-bold">Grátis</span></span></li>
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>Fígado Leve e Desinflamado</span><span class="text-xs whitespace-nowrap"><span class="item-status-price">18 €</span> <span class="text-cta font-bold">Grátis</span></span></li>
+        <li><span class="flex items-start gap-2"><span class="text-cta font-bold">✓</span>Garantia incondicional de 28 dias</span><span class="item-status-included">Incluído</span></li>
+      </ul>
+
+      <div class="text-center my-4">
+        <p class="text-sm" style="color:#4F5951;">De <span class="old-price-strike" style="font-size:16px !important;">15 €</span> por apenas:</p>
+        <p class="price-value font-serif text-3xl sm:text-4xl font-bold">10 €</p>
+        <p class="cta-caption text-muted text-xs mt-1">Pagamento único • Sem mensalidades</p>
+      </div>
+
+      <div class="bg-savings text-primary text-center text-sm font-bold rounded-lg py-2.5 px-3 mb-5">🎉 Mais de 100 € em bónus, grátis nesta oferta de saída!</div>
+
+      <a href="https://pay.hotmart.com/B107567109P?off=3qyhz5sd&checkoutMode=10" data-checkout class="botao btn-plano-completo compacto"><span>👉 SIM! QUERO O MEU DESCONTO E PAGAR APENAS 10€ AGORA</span></a>
+    </div>
+
+    <p class="text-center text-xs italic" style="color:#4F5951;">(Esta oportunidade especial desaparece no momento em que sair desta página.)</p>
+  </div>
+</div>
+
 <script>
   // 1) Esteira: duplica as filas para criar loop infinito
   document.querySelectorAll('.esteira .fileira').forEach(function (fileira) {
@@ -1311,13 +1436,21 @@ h2, .section-title { font-size: 26px !important; line-height: 1.25 !important; m
       document.body.style.overflow = '';
     }
 
-    btnBasico.addEventListener('click', function (e) {
+    // IMPORTANTE: o listener e registrado no document, em fase de CAPTURA, e nao no
+    // proprio botao. Isso garante que roda ANTES do clique chegar ao botao — ou seja,
+    // antes de qualquer listener que scripts de tracking (ex: Cashflow) tenham anexado
+    // diretamente no elemento. Registrar no proprio botao (como antes) nao bastava:
+    // quando dois listeners estao no mesmo elemento, quem foi registrado primeiro
+    // (a Cashflow, que carrega antes no <head>) dispara primeiro, e o preventDefault/
+    // stopPropagation do nosso listener chegava tarde demais pra evitar o redirecionamento.
+    document.addEventListener('click', function (e) {
       if (handled) return; // ja decidiu antes, deixa seguir direto pro checkout basico
+      var alvo = e.target.closest && e.target.closest('#cta-plano-basico');
+      if (!alvo) return;
       e.preventDefault();
-      e.stopPropagation(); // impede que scripts de tracking (ex: Cashflow) que tambem
-      // escutam cliques em links do Hotmart redirecionem para o checkout em paralelo ao popup
+      e.stopPropagation();
       abrirModal();
-    });
+    }, { capture: true });
 
     btnClose.addEventListener('click', fecharModal);
     overlay.addEventListener('click', function (e) {
@@ -1428,6 +1561,48 @@ h2, .section-title { font-size: 26px !important; line-height: 1.25 !important; m
 
     window.addEventListener('load', function () {
       setTimeout(agendar, 300);
+    });
+  })();
+
+  // 8) Back-redirect: quando o visitante aperta o botao "voltar" do navegador,
+  // mostra o pop-up de oferta de saida por cima da propria pagina (sem navegar
+  // para outro arquivo). So acontece uma vez por sessao.
+  (function () {
+    var CHAVE = 'saida_oferta_mostrada';
+    var overlay = document.getElementById('saida-overlay');
+    var btnClose = document.getElementById('saida-close');
+    if (!overlay) return;
+
+    function carregarImagens() {
+      ['saida-img-dependencia', 'saida-img-pacote'].forEach(function (id) {
+        var img = document.getElementById(id);
+        if (img && img.dataset.src) { img.src = img.dataset.src; img.removeAttribute('data-src'); }
+      });
+    }
+    function abrirSaida() {
+      carregarImagens();
+      overlay.classList.add('ativo');
+      document.body.style.overflow = 'hidden';
+    }
+    function fecharSaida() {
+      overlay.classList.remove('ativo');
+      document.body.style.overflow = '';
+    }
+
+    btnClose.addEventListener('click', fecharSaida);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) fecharSaida();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('ativo')) fecharSaida();
+    });
+
+    if (sessionStorage.getItem(CHAVE)) return;
+    history.pushState({ semVoltar: true }, '', location.href);
+    window.addEventListener('popstate', function () {
+      if (sessionStorage.getItem(CHAVE)) return;
+      sessionStorage.setItem(CHAVE, '1');
+      abrirSaida();
     });
   })();
 </script>
