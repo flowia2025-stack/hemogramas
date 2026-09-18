@@ -7,7 +7,7 @@
 <!-- ============ Pixel de rastreio: conecta e dispara o quanto antes ============ -->
 <link rel="preconnect" href="https://cashflow.mentoriaprocesso.com" crossorigin>
 <link rel="dns-prefetch" href="https://cashflow.mentoriaprocesso.com">
-<script src="https://cashflow.mentoriaprocesso.com/t/p.js?w=539660bd-dbb4-48a6-b691-b7c99978e557&o=b13df420-bf90-4ece-8645-9c56a46e26de" data-offer="b13df420-bf90-4ece-8645-9c56a46e26de" data-nowprocket data-no-minify="1" data-no-optimize="1" data-cfasync="false" async></script>
+<script src="https://cashflow.mentoriaprocesso.com/t/p.js?w=539660bd-dbb4-48a6-b691-b7c99978e557&o=09a12b33-7872-46dc-a34f-41885b9509ab" data-offer="09a12b33-7872-46dc-a34f-41885b9509ab" data-nowprocket data-no-minify="1" data-no-optimize="1" data-cfasync="false" async></script>
 
 <link rel="preconnect" href="https://api.metrito.com" crossorigin>
 <link rel="dns-prefetch" href="https://api.metrito.com">
@@ -1314,6 +1314,8 @@ h2, .section-title { font-size: 26px !important; line-height: 1.25 !important; m
     btnBasico.addEventListener('click', function (e) {
       if (handled) return; // ja decidiu antes, deixa seguir direto pro checkout basico
       e.preventDefault();
+      e.stopPropagation(); // impede que scripts de tracking (ex: Cashflow) que tambem
+      // escutam cliques em links do Hotmart redirecionem para o checkout em paralelo ao popup
       abrirModal();
     });
 
