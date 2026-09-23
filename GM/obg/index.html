@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pedido confirmado</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"></noscript>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream: '#F8F5EE',
+          card: '#FFFFFF',
+          forest: '#081F13',
+          primary: '#143E2B',
+          gold: '#C58814',
+          cta: '#28A745',
+          savings: '#DCFCE7',
+          muted: '#4F5951',
+          borderc: '#E5DFC9',
+        },
+        fontFamily: {
+          serif: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  :root {
+    --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  html { scroll-behavior: auto; }
+  body { font-family: var(--font-body); }
+
+  .icone-check {
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    background: #DCFCE7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem auto;
+  }
+</style>
+</head>
+<body class="font-sans bg-cream text-forest antialiased overflow-x-hidden">
+
+<main class="px-4 py-14 sm:py-20 min-h-screen flex items-center">
+  <div class="w-full max-w-md mx-auto text-center">
+
+    <div class="icone-check">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="#143E2B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h1 class="font-serif text-forest text-2xl sm:text-3xl leading-tight font-extrabold mb-4">Pedido confirmado!</h1>
+
+    <p class="text-muted text-sm sm:text-base leading-relaxed mb-2">O seu pedido foi confirmado com sucesso e os seus acessos já foram enviados para o seu e-mail.</p>
+
+    <p class="text-muted text-sm sm:text-base leading-relaxed">Se não encontrar a mensagem na caixa de entrada, verifique também a pasta de spam ou de promoções.</p>
+
+  </div>
+</main>
+
+</body>
+</html>
