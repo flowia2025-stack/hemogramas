@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ativar Acesso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B2416;
+    --surface:#12301F;
+    --border:#26472F;
+    --border-strong:#345940;
+    --forest-700:#143E2B;
+    --forest-900:#081F13;
+    --text:#F3EFE3;
+    --text-muted:#B7C9AE;
+    --gold:#E8B435;
+    --gold-deep:#D49A24;
+    --gold-light:#F0C363;
+    --success:#4ADE80;
+    --danger:#F27171;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -12px rgba(0,0,0,.5);
+  }
+  html{color-scheme:dark;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:'Inter',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  [hidden]{display:none!important;}
+
+  .wrap{
+    min-height:100dvh;display:flex;align-items:center;justify-content:center;
+    padding:24px 16px;background:radial-gradient(120% 100% at 50% 0%, var(--forest-700), var(--bg) 70%);
+  }
+  .card{
+    width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border);
+    border-radius:20px;box-shadow:var(--shadow);overflow:hidden;
+  }
+  .hero{position:relative;width:100%;aspect-ratio:16/9;}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  .hero-fade{position:absolute;inset:0;background:linear-gradient(to bottom, rgba(8,26,17,0) 45%, var(--surface) 96%);}
+  .body{padding:4px 24px 28px;}
+  .eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;}
+  h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.35rem;font-weight:800;line-height:1.25;margin:0 0 10px;text-wrap:balance;}
+  .lead{margin:0 0 20px;font-size:.92rem;line-height:1.5;color:var(--text-muted);}
+
+  form{display:flex;flex-direction:column;gap:8px;}
+  label{font-size:.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;}
+  input{
+    height:48px;border-radius:11px;border:1px solid var(--border-strong);background:var(--bg);
+    color:var(--text);padding:0 14px;font-size:1rem;font-family:inherit;width:100%;
+  }
+  input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  #codigo{text-transform:uppercase;letter-spacing:.06em;}
+
+  .msg{border-radius:10px;padding:10px 12px;font-size:.86rem;font-weight:600;line-height:1.45;margin-top:4px;}
+  .msg.error{background:rgba(242,113,113,.14);border:1px solid var(--danger);color:var(--danger);}
+  .msg.ok{background:rgba(74,222,128,.12);border:1px solid var(--success);color:var(--success);}
+  .msg a{color:inherit;}
+
+  button{
+    display:flex;align-items:center;justify-content:center;width:100%;height:50px;margin-top:10px;
+    border-radius:999px;border:none;cursor:pointer;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.92rem;letter-spacing:.02em;text-transform:uppercase;
+    background:linear-gradient(135deg, var(--gold-light), var(--gold-deep));color:var(--forest-900);
+  }
+  button:hover{filter:brightness(1.06);}
+  button:disabled{opacity:.7;cursor:default;}
+
+  .hint{margin:20px 0 0;font-size:.86rem;color:var(--text-muted);text-align:center;}
+  .hint a{color:var(--gold-light);font-weight:700;text-decoration:none;}
+  .hint a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="card">
+    <div class="hero">
+      <img src="../images/garrafadas-cover.jpg" alt="+300 Receitas de Mezinhas e Garrafadas Medicinais" onerror="this.parentNode.hidden=true">
+      <div class="hero-fade"></div>
+    </div>
+    <div class="body">
+      <span class="eyebrow">Ativação de acesso</span>
+      <h1>Comprou e não consegue entrar?</h1>
+      <p class="lead">Introduza o e-mail que usou na compra e o código de ativação que recebeu do suporte.</p>
+
+      <form id="form" novalidate>
+        <label for="email">E-mail usado na compra</label>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com" autocomplete="email" inputmode="email" required>
+
+        <label for="codigo">Código de ativação</label>
+        <input type="text" id="codigo" placeholder="CÓDIGO" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+
+        <div class="msg error" id="error" hidden></div>
+        <div class="msg ok" id="ok" hidden></div>
+
+        <button type="submit" id="btn"><span id="btnLabel">Ativar acesso</span></button>
+      </form>
+
+      <p class="hint">Já tem acesso? <a href="../" id="areaLink">Entrar na área de membros</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     CONFIGURAÇÃO
+     ============================================================ */
+  // URL de PRODUÇÃO do nó Webhook do fluxo "Ativação por código" no N8N
+  var N8N_WEBHOOK_URL = "https://n8nwebhook.n8nlowticket.shop/webhook/ativar-mezinhas";
+  // Mesmos valores da área de membros (para entrar sozinho depois de ativar)
+  var API_URL = "https://stack-membros-api.hycgbr.easypanel.host";
+  var API_KEY = "AAAHimr6C4s7XR5FUaTxfs29p1FiRZ1O";
+  var MAIN_PRODUCT_ID = "8500209";
+  var TOKEN_KEY = "mezinhas_token";
+  var AREA_URL = "../"; // esta página fica em areamembros/ativar/, a área em areamembros/
+
+  var form = document.getElementById("form");
+  var emailEl = document.getElementById("email");
+  var codigoEl = document.getElementById("codigo");
+  var errorEl = document.getElementById("error");
+  var okEl = document.getElementById("ok");
+  var btn = document.getElementById("btn");
+  var btnLabel = document.getElementById("btnLabel");
+
+  function showError(text){ okEl.hidden = true; errorEl.textContent = text; errorEl.hidden = false; }
+  function busy(on){ btn.disabled = on; btnLabel.textContent = on ? "A ativar…" : "Ativar acesso"; }
+
+  // Depois de ativar, faz o login normal da área e entra já com a sessão guardada.
+  function loginAndEnter(email){
+    return fetch(API_URL + "/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Api-Key": API_KEY },
+      body: JSON.stringify({ email: email, mainProductId: MAIN_PRODUCT_ID })
+    })
+      .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+      .then(function(res){
+        if(!res.ok || !res.d.token) throw new Error("login");
+        try{ localStorage.setItem(TOKEN_KEY, res.d.token); }catch(e){}
+        location.href = AREA_URL;
+      });
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var email = emailEl.value.trim().toLowerCase();
+    var codigo = codigoEl.value.trim().toUpperCase();
+    errorEl.hidden = true;
+
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showError("Introduza um e-mail válido."); emailEl.focus(); return; }
+    if(!codigo){ showError("Introduza o código de ativação."); codigoEl.focus(); return; }
+
+    busy(true);
+    // form-urlencoded não dispara pré-verificação de CORS no navegador
+    fetch(N8N_WEBHOOK_URL, { method: "POST", body: new URLSearchParams({ email: email, codigo: codigo }) })
+      .then(function(r){ if(!r.ok) throw new Error("n8n"); return r.json(); })
+      .then(function(d){
+        var res = Array.isArray(d) ? d[0] : d;
+        if(!res || res.ok !== true){
+          busy(false);
+          showError("Código de ativação inválido. Confira o código que recebeu do suporte.");
+          return;
+        }
+        okEl.textContent = "Acesso ativado! A entrar na área de membros…";
+        okEl.hidden = false;
+        return loginAndEnter(email).catch(function(){
+          // ativou, mas o login automático falhou: entra pela tela normal
+          busy(false);
+          okEl.innerHTML = 'Acesso ativado! <a href="' + AREA_URL + '">Toque aqui</a> e entre com o seu e-mail.';
+        });
+      })
+      .catch(function(){
+        busy(false);
+        showError("Não foi possível ativar agora. Verifique a sua internet e tente novamente.");
+      });
+  });
+})();
+</script>
+</body>
+</html>
